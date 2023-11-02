@@ -1,0 +1,14 @@
+server:
+  port: 3003
+spring:
+  main:
+    web-application-type: servlet
+  jpa:
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    username: "admin"
+    password: "gbT^%4"
+    url: "jdbc:postgresql://localhost:5402/shop"
+    driver-class-name: org.postgresql.Driver
