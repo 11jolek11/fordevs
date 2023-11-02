@@ -1,0 +1,28 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "3000:8080"
+  postgres:
+    container_name: 'fordevs_db_postgres'
+    image: 'postgres:15.4-alpine'
+    restart: unless-stopped
+    # Not using env files for simplicity
+    environment:
+      - POSTGRES_DB=shop
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=fgDE%464
+      - POSTGRES_DATA=/data/postgres
+    ports:
+      - '5402:5432'
+    networks:
+      - fordevs_internal
+    volumes:
+      - fordevs_volume:/data/postgres
+
+volumes:
+  fordevs_volume:
+
+networks:
+  fordevs_internal:
+    driver: bridge
