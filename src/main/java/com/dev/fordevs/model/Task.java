@@ -30,7 +30,7 @@ public class Task {
     private int estimation;
     // TODO: change type (see TODO.txt at 1.)
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Specialization specialization;
 
     @ManyToOne(fetch = FetchType.LAZY)
