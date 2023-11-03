@@ -1,5 +1,7 @@
 package com.dev.fordevs.security.model;
 
+import com.dev.fordevs.model.Specialization;
+import com.dev.fordevs.model.Task;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -35,11 +37,12 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = )
+    @OneToMany(mappedBy = "user")
     private Set<Task> tasks;
 
-    @ManyToMany(mappedBy = )
-    private Set<Project> projects;
+    // TODO: Should be relat Project <-> User be bidirectional?
+//    @ManyToMany(mappedBy = )
+//    private Set<Project> projects;
 
     @ManyToOne(optional = false)
     private Specialization specialization;
@@ -99,13 +102,13 @@ public class User implements UserDetails {
         this.tasks = tasks;
     }
 
-    public Set<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(Set<Project> projects) {
-        this.projects = projects;
-    }
+//    public Set<Project> getProjects() {
+//        return projects;
+//    }
+//
+//    public void setProjects(Set<Project> projects) {
+//        this.projects = projects;
+//    }
 
     public Specialization getSpecialization() {
         return specialization;
@@ -155,12 +158,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(tasks, user.tasks) && Objects.equals(projects, user.projects) && Objects.equals(specialization, user.specialization);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(tasks, user.tasks) /*&& Objects.equals(projects, user.projects)*/ && Objects.equals(specialization, user.specialization);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, role, tasks, projects, specialization);
+        return Objects.hash(id, name, email, password, role, tasks, /*projects,*/ specialization);
     }
 
     @Override
@@ -172,7 +175,7 @@ public class User implements UserDetails {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", tasks=" + tasks +
-                ", projects=" + projects +
+                /*", projects=" + projects + */
                 ", specialization=" + specialization +
                 '}';
     }
