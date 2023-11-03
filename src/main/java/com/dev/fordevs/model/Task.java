@@ -25,6 +25,13 @@ public class Task {
 //    @Basic(fetch = FetchType.LAZY)
 //    @Column(columnDefinition = "BLOB")
     private String description;
+    @Min(0)
+    @NotNull
+    private int estimation;
+    // TODO: change type (see TODO.txt at 1.)
+    @Enumerated(value = EnumType.STRING)
+    @NotNull
+    private TaskSpecialization specialization;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "_user_id", referencedColumnName = "id")
@@ -37,16 +44,20 @@ public class Task {
     public Task() {
     }
 
-    public Task(String title, String description, Project project, TaskStatus taskStatus) {
+    public Task(TaskStatus taskStatus, String title, String description, int estimation, TaskSpecialization specialization, Project project) {
+        this.taskStatus = taskStatus;
         this.title = title;
         this.description = description;
+        this.estimation = estimation;
+        this.specialization = specialization;
         this.project = project;
-        this.taskStatus = taskStatus;
     }
 
-    public Task(String title, String description, Project project) {
+    public Task(String title, String description, int estimation, TaskSpecialization specialization, Project project) {
         this.title = title;
         this.description = description;
+        this.estimation = estimation;
+        this.specialization = specialization;
         this.project = project;
         this.taskStatus = TaskStatus.UNASSIGNED;
     }
@@ -91,6 +102,22 @@ public class Task {
         this.description = description;
     }
 
+    public int getEstimation() {
+        return estimation;
+    }
+
+    public void setEstimation(int estimation) {
+        this.estimation = estimation;
+    }
+
+    public TaskSpecialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(TaskSpecialization specialization) {
+        this.specialization = specialization;
+    }
+
     public User getUser() {
         return user;
     }
@@ -112,12 +139,12 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(creationDate, task.creationDate) && taskStatus == task.taskStatus && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(user, task.user) && Objects.equals(project, task.project);
+        return estimation == task.estimation && Objects.equals(id, task.id) && Objects.equals(creationDate, task.creationDate) && taskStatus == task.taskStatus && Objects.equals(title, task.title) && Objects.equals(description, task.description) && specialization == task.specialization && Objects.equals(user, task.user) && Objects.equals(project, task.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, creationDate, taskStatus, title, description, user, project);
+        return Objects.hash(id, creationDate, taskStatus, title, description, estimation, specialization, user, project);
     }
 
     @Override
@@ -128,6 +155,8 @@ public class Task {
                 ", taskStatus=" + taskStatus +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", estimation=" + estimation +
+                ", specialization=" + specialization +
                 ", user=" + user +
                 ", project=" + project +
                 '}';
