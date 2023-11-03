@@ -18,7 +18,7 @@ public class Project {
     private String title;
     private String description;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private Set<Task> tasks;
 
     @ManyToMany
