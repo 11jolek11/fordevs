@@ -29,9 +29,9 @@ public class Task {
     @NotNull
     private int estimation;
     // TODO: change type (see TODO.txt at 1.)
-    @Enumerated(value = EnumType.STRING)
-    @NotNull
-    private TaskSpecialization specialization;
+
+    @ManyToOne
+    private Specialization specialization;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "_user_id", referencedColumnName = "id")
@@ -44,7 +44,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(TaskStatus taskStatus, String title, String description, int estimation, TaskSpecialization specialization, Project project) {
+    public Task(TaskStatus taskStatus, String title, String description, int estimation, Specialization specialization, Project project) {
         this.taskStatus = taskStatus;
         this.title = title;
         this.description = description;
@@ -53,7 +53,7 @@ public class Task {
         this.project = project;
     }
 
-    public Task(String title, String description, int estimation, TaskSpecialization specialization, Project project) {
+    public Task(String title, String description, int estimation, Specialization specialization, Project project) {
         this.title = title;
         this.description = description;
         this.estimation = estimation;
@@ -110,11 +110,11 @@ public class Task {
         this.estimation = estimation;
     }
 
-    public TaskSpecialization getSpecialization() {
+    public Specialization getSpecialization() {
         return specialization;
     }
 
-    public void setSpecialization(TaskSpecialization specialization) {
+    public void setSpecialization(Specialization specialization) {
         this.specialization = specialization;
     }
 
