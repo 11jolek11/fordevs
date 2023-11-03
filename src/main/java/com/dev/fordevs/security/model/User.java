@@ -41,14 +41,26 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = )
     private Set<Project> projects;
 
+    @ManyToOne(optional = false)
+    private Specialization specialization;
+
     public User() {
     }
 
-    public User(String name, String email, String password, Role role) {
+    public User(String name, String email, String password, Role role, Specialization specialization) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.specialization = specialization;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -95,6 +107,14 @@ public class User implements UserDetails {
         this.projects = projects;
     }
 
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
@@ -135,12 +155,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(tasks, user.tasks) && Objects.equals(projects, user.projects);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(tasks, user.tasks) && Objects.equals(projects, user.projects) && Objects.equals(specialization, user.specialization);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, role, tasks, projects);
+        return Objects.hash(id, name, email, password, role, tasks, projects, specialization);
     }
 
     @Override
@@ -153,6 +173,7 @@ public class User implements UserDetails {
                 ", role=" + role +
                 ", tasks=" + tasks +
                 ", projects=" + projects +
+                ", specialization=" + specialization +
                 '}';
     }
 }
