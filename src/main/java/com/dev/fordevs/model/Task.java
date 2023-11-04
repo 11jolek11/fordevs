@@ -28,12 +28,10 @@ public class Task {
 //    @Basic(fetch = FetchType.LAZY)
 //    @Column(columnDefinition = "BLOB")
     private String description;
-    @Min(0)
-    @NotNull
-    private int estimation;
 
-    @ManyToOne(optional = false)
-    private Specialization specialization;
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "task_creditionals", referencedColumnName = "id")
+    private TaskCredentials taskCredentials;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "_user_id", referencedColumnName = "id")
@@ -46,20 +44,18 @@ public class Task {
     public Task() {
     }
 
-    public Task(TaskStatus taskStatus, String title, String description, int estimation, Specialization specialization, Project project) {
+    public Task(TaskStatus taskStatus, String title, String description, int estimation, TaskCredentials taskCredentials, Project project) {
         this.taskStatus = taskStatus;
         this.title = title;
+        this.taskCredentials = taskCredentials;
         this.description = description;
-        this.estimation = estimation;
-        this.specialization = specialization;
         this.project = project;
     }
 
-    public Task(String title, String description, int estimation, Specialization specialization, Project project) {
+    public Task(String title, String description, TaskCredentials taskCredentials, Project project) {
         this.title = title;
         this.description = description;
-        this.estimation = estimation;
-        this.specialization = specialization;
+        this.taskCredentials = taskCredentials;
         this.project = project;
         this.taskStatus = TaskStatus.UNASSIGNED;
     }
@@ -104,20 +100,12 @@ public class Task {
         this.description = description;
     }
 
-    public int getEstimation() {
-        return estimation;
+    public TaskCredentials getTaskCredentials() {
+        return taskCredentials;
     }
 
-    public void setEstimation(int estimation) {
-        this.estimation = estimation;
-    }
-
-    public Specialization getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(Specialization specialization) {
-        this.specialization = specialization;
+    public void setTaskCredentials(TaskCredentials taskCredentials) {
+        this.taskCredentials = taskCredentials;
     }
 
     public User getUser() {
@@ -141,12 +129,12 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return estimation == task.estimation && Objects.equals(id, task.id) && Objects.equals(creationDate, task.creationDate) && taskStatus == task.taskStatus && Objects.equals(title, task.title) && Objects.equals(description, task.description) && specialization == task.specialization && Objects.equals(user, task.user) && Objects.equals(project, task.project);
+        return Objects.equals(id, task.id) && Objects.equals(creationDate, task.creationDate) && taskStatus == task.taskStatus && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(taskCredentials, task.taskCredentials) && Objects.equals(user, task.user) && Objects.equals(project, task.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, creationDate, taskStatus, title, description, estimation, specialization, user, project);
+        return Objects.hash(id, creationDate, taskStatus, title, description, taskCredentials, user, project);
     }
 
     @Override
@@ -157,8 +145,7 @@ public class Task {
                 ", taskStatus=" + taskStatus +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", estimation=" + estimation +
-                ", specialization=" + specialization +
+                ", taskCredentials=" + taskCredentials +
                 ", user=" + user +
                 ", project=" + project +
                 '}';
