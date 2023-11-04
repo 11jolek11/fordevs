@@ -9,8 +9,8 @@ import java.util.Set;
 @Entity
 public class ProjectCredentials {
     @Id
-    @SequenceGenerator(name = "_order_id_gen", sequenceName = "_order_id_seq")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "_order_id_gen")
+    @SequenceGenerator(name = "_project_cred_id_gen", sequenceName = "_project_cred_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "_project_cred_id_gen")
     private Long id;
 
     @OneToOne(mappedBy = "projectCredentials")
