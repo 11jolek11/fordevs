@@ -31,7 +31,6 @@ public class Task {
     @Min(0)
     @NotNull
     private int estimation;
-    // TODO: change type (see TODO.txt at 1.)
 
     @ManyToOne(optional = false)
     private Specialization specialization;
