@@ -1,6 +1,5 @@
 todos outside the code
 
-// TODO
-2. Change models for Credits of Tasks and Projects
-3. Error handling
-4.
+// TODO Change models for Credits of Tasks and Projects
+// TODO Add Error handling
+// TODO Add responses objects if needed
