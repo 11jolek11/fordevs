@@ -3,6 +3,9 @@ package com.dev.fordevs.controller;
 import com.dev.fordevs.model.Project;
 import com.dev.fordevs.model.Task;
 import com.dev.fordevs.model.TaskStatus;
+import com.dev.fordevs.service.ProjectService;
+import com.dev.fordevs.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
