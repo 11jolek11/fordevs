@@ -1,5 +1,6 @@
 package com.dev.fordevs.security.config;
 
+import com.dev.fordevs.security.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +24,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User doesn't exist."));
+        return username -> userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User doesn't exist."));
     }
 
     @Bean

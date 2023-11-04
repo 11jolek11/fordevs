@@ -1,11 +1,12 @@
 package com.dev.fordevs.security.service;
 
+import com.dev.fordevs.security.model.User;
+import com.dev.fordevs.security.repository.UserRepository;
 import com.dev.fordevs.security.service.utils.AuthenticationRequest;
 import com.dev.fordevs.security.service.utils.AuthenticationResponse;
 import com.dev.fordevs.security.service.utils.RegisterRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,13 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        // TODO: Add User builder
         var user = User.builder()
-                .build();
+                .name(registerRequest.getName())
+                .password(registerRequest.getPassword())
+                .email(registerRequest.getEmail())
+                .role(registerRequest.getRole())
+                .specialization(registerRequest.getSpecialization())
+        .build();
 
         this.userRepository.save(user);
 
@@ -44,7 +49,7 @@ public class AuthenticationService {
                 )
         );
 
-        var user = this.userRepository.findUserByName(authenticationRequest.getEmail()).orElseThrow();
+        var user = this.userRepository.findUserByEmail(authenticationRequest.getEmail()).orElseThrow();
 
         String accessToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
