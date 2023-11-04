@@ -1,4 +1,6 @@
 todos outside the code
 
 // TODO
-1. Add separate model Specialisation for user and task
+2. Change models for Credits of Tasks and Projects
+3. Error handling
+4.
