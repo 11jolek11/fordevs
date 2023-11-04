@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasks;
 
-    // TODO: Should be relat Project <-> User be bidirectional?
+    // TODO: Should relation Project <-> User be bidirectional?
 //    @ManyToMany(mappedBy = )
 //    private Set<Project> projects;
 
@@ -178,6 +178,10 @@ public class User implements UserDetails {
                 /*", projects=" + projects + */
                 ", specialization=" + specialization +
                 '}';
+    }
+
+    public static UserBuilder builder() {
+        return new UserBuilder();
     }
 
     public static class UserBuilder {
