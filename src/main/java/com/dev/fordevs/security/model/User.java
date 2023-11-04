@@ -1,5 +1,6 @@
 package com.dev.fordevs.security.model;
 
+import com.dev.fordevs.model.ProjectCredentials;
 import com.dev.fordevs.model.Specialization;
 import com.dev.fordevs.model.Task;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,7 +16,7 @@ import java.util.*;
 @Entity
 @Table(name = "_user")
 public class User implements UserDetails {
-    // TODO: How to handle history of Tasks?
+    // TODO: How to handle history of completed Tasks?
 //    User is a DEVELOPER
     @Id
     @SequenceGenerator(name = "_user_id_seq_generator", sequenceName = "_user_id_seq", allocationSize = 1)
@@ -40,9 +41,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Task> tasks;
 
-    // TODO: Should relation Project <-> User be bidirectional?
-//    @ManyToMany(mappedBy = )
-//    private Set<Project> projects;
+    // TODO: Should relation ProjectCred <-> User be bidirectional?
+//    @ManyToMany(mappedBy = "users")
+//    private Set<ProjectCredentials> assignedProjects;
+
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinTable(name = "_user_project_cred",
+            joinColumns = @JoinColumn(name = "_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_cred_id"))
+    private Set<ProjectCredentials> assignedProjects;
 
     @ManyToOne(optional = false)
     private Specialization specialization;
@@ -118,6 +125,14 @@ public class User implements UserDetails {
         this.specialization = specialization;
     }
 
+    public Set<ProjectCredentials> getAssignedProjects() {
+        return assignedProjects;
+    }
+
+    public void setAssignedProjects(Set<ProjectCredentials> assignedProjects) {
+        this.assignedProjects = assignedProjects;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
@@ -158,12 +173,12 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(tasks, user.tasks) /*&& Objects.equals(projects, user.projects)*/ && Objects.equals(specialization, user.specialization);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(tasks, user.tasks) && Objects.equals(assignedProjects, user.assignedProjects) && Objects.equals(specialization, user.specialization);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, role, tasks, /*projects,*/ specialization);
+        return Objects.hash(id, name, email, password, role, tasks, assignedProjects, specialization);
     }
 
     @Override
@@ -175,7 +190,7 @@ public class User implements UserDetails {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", tasks=" + tasks +
-                /*", projects=" + projects + */
+                ", assignedProjects=" + assignedProjects +
                 ", specialization=" + specialization +
                 '}';
     }

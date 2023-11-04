@@ -21,18 +21,27 @@ public class Project {
     @OneToMany(mappedBy = "project", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private Set<Task> tasks;
 
-    @ManyToMany
-    @JoinTable(name = "project_user",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "_user_id"))
-    private Set<User> users;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "maintainer", referencedColumnName = "id")
+    private User maintainer; // maintainer != creator
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project_creditionals", referencedColumnName = "id")
+    private ProjectCredentials projectCredentials;
+
+//    @ManyToMany
+//    @JoinTable(name = "project_user",
+//            joinColumns = @JoinColumn(name = "project_id"),
+//            inverseJoinColumns = @JoinColumn(name = "_user_id"))
+//    private Set<User> users;
 
     public Project() {
     }
 
-    public Project(String title, String description) {
+    public Project(String title, String description, User maintainer) {
         this.title = title;
         this.description = description;
+        this.maintainer = maintainer;
     }
 
     public Long getId() {
@@ -67,12 +76,20 @@ public class Project {
         this.tasks = tasks;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getMaintainer() {
+        return maintainer;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setMaintainer(User maintainer) {
+        this.maintainer = maintainer;
+    }
+
+    public ProjectCredentials getProjectCredentials() {
+        return projectCredentials;
+    }
+
+    public void setProjectCredentials(ProjectCredentials projectCredentials) {
+        this.projectCredentials = projectCredentials;
     }
 
     @Override
@@ -80,12 +97,12 @@ public class Project {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
-        return Objects.equals(id, project.id) && Objects.equals(title, project.title) && Objects.equals(description, project.description) && Objects.equals(tasks, project.tasks) && Objects.equals(users, project.users);
+        return Objects.equals(id, project.id) && Objects.equals(title, project.title) && Objects.equals(description, project.description) && Objects.equals(tasks, project.tasks) && Objects.equals(maintainer, project.maintainer) && Objects.equals(projectCredentials, project.projectCredentials);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, tasks, users);
+        return Objects.hash(id, title, description, tasks, maintainer, projectCredentials);
     }
 
     @Override
@@ -95,7 +112,8 @@ public class Project {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", tasks=" + tasks +
-                ", users=" + users +
+                ", maintainer=" + maintainer +
+                ", projectCredentials=" + projectCredentials +
                 '}';
     }
 }
