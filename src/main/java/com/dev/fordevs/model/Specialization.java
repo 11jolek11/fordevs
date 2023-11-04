@@ -1,6 +1,7 @@
 package com.dev.fordevs.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
