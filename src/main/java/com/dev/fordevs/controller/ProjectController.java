@@ -1,6 +1,7 @@
 package com.dev.fordevs.controller;
 
 import com.dev.fordevs.model.Project;
+import com.dev.fordevs.model.ProjectCredentials;
 import com.dev.fordevs.model.Task;
 import com.dev.fordevs.model.TaskStatus;
 import com.dev.fordevs.service.ProjectService;
@@ -26,13 +27,13 @@ public class ProjectController {
     }
 
     @GetMapping("/")
-    public Set<Project> getAllProjects() {
+    public List<Project> getAllProjects() {
 //        TODO: Add pagination?
         return this.projectService.getAllProjects();
     }
 
     @GetMapping("/{projectId}")
-    public Optional<Project> getProjectById(@PathVariable("projectId") Integer id) {
+    public Project getProjectById(@PathVariable("projectId") Long id) {
         return this.projectService.getProjectById(id);
     }
 
@@ -46,20 +47,20 @@ public class ProjectController {
     // https://github.com/Solvro/rekrutacja.zima.2023/blob/master/backend.md#wy%C5%9Bwietlenie-projekt%C3%B3w-u%C5%BCytkownika
     // there is no place for PathVariable in specification
     public List<Project> projectsOfUser(@RequestParam Long userId) {
-        // TODO: think about it
         return this.projectService.getProjectsByUserId(userId);
     }
 
     @PostMapping("/{projectId}/task")
     public void addTaskToProject(@PathVariable("projectId") Long projectId, @Valid @RequestBody Task task) {
-        Long taskId = this.taskService.addTask(task); // TODO: Return task id
+        Long taskId = this.taskService.createTask(task); // TODO: Return task id
         this.projectService.assignTask(projectId, taskId);
     }
 
     @PutMapping("/{projectId}/task/{taskId}")
-    // Q: What is the purpose of projectId in specification? taskId is already unique
+    // TODO: ASK QUESTION IN ISSUES: What is the purpose of projectId in specification? taskId is already unique
     // https://github.com/Solvro/rekrutacja.zima.2023/blob/master/backend.md#edycja-statusu-taska
-    // Leaving projectId just to cover my ass and meet req in spec.
+    //
+    // Leaving projectId just to meet req in spec.
     public void updateTaskStatus(@PathVariable("projectId") Long projectId, @PathVariable Long taskId, @RequestParam TaskStatus taskStatus) {
         this.taskService.updateStatus(taskId, taskStatus);
     }
