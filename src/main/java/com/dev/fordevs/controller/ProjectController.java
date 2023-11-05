@@ -38,10 +38,7 @@ public class ProjectController {
     }
 
     @PostMapping("/")
-    public void addProject(@Valid @RequestBody Project project, @RequestBody(required = false) ProjectCredentials projectCredentials) {
-        if (projectCredentials != null) {
-            this.projectService.addProject(project, projectCredentials);
-        }
+    public void addProject(@Valid @RequestBody Project project) {
         this.projectService.addProject(project);
     }
 
@@ -51,7 +48,7 @@ public class ProjectController {
     // there is no place for PathVariable in specification
     public List<Project> projectsOfUser(@RequestParam Long userId) {
         // TODO: think about it
-        return this.projectService.getProjectsByUserId(userId);
+        return this.???.???(userId);
     }
 
     @PostMapping("/{projectId}/task")
