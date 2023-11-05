@@ -47,8 +47,7 @@ public class ProjectController {
     // https://github.com/Solvro/rekrutacja.zima.2023/blob/master/backend.md#wy%C5%9Bwietlenie-projekt%C3%B3w-u%C5%BCytkownika
     // there is no place for PathVariable in specification
     public List<Project> projectsOfUser(@RequestParam Long userId) {
-        // TODO: think about it
-        return this.???.???(userId);
+        return this.projectService.getProjectsByUserId(userId);
     }
 
     @PostMapping("/{projectId}/task")

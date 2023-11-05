@@ -8,6 +8,8 @@ import com.dev.fordevs.repository.ProjectCredentialsRepository;
 import com.dev.fordevs.repository.ProjectRepository;
 import com.dev.fordevs.repository.TaskCredentialsRepository;
 import com.dev.fordevs.repository.TaskRepository;
+import com.dev.fordevs.security.model.User;
+import com.dev.fordevs.security.repository.UserRepository;
 import com.dev.fordevs.service.exception.ItemNotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +24,14 @@ public class ProjectService {
     private final TaskRepository taskRepository;
     private final TaskCredentialsRepository taskCredentialsRepository;
 
-    public ProjectService(ProjectRepository projectRepository, ProjectCredentialsRepository projectCredentialsRepository, TaskRepository taskRepository, TaskCredentialsRepository taskCredentialsRepository) {
+    private final UserRepository userRepository;
+
+    public ProjectService(ProjectRepository projectRepository, ProjectCredentialsRepository projectCredentialsRepository, TaskRepository taskRepository, TaskCredentialsRepository taskCredentialsRepository, UserRepository userRepository) {
         this.projectRepository = projectRepository;
         this.projectCredentialsRepository = projectCredentialsRepository;
         this.taskRepository = taskRepository;
         this.taskCredentialsRepository = taskCredentialsRepository;
+        this.userRepository = userRepository;
     }
 
     public void assignTask(Long projectId, Long taskId) {
@@ -38,9 +43,13 @@ public class ProjectService {
         this.projectRepository.save(project);
     }
 
-//    public List<Project> getProjectsByUserId(Long userId) {
-//        return new ArrayList<>();
-//    }
+    public List<Project> getProjectsByUserId(Long userId) {
+        // Ugly
+        List<User> target_user = new ArrayList<>();
+        target_user.add(this.userRepository.findById(userId).orElseThrow(() -> new ItemNotFoundException("User with id: "  + userId + " not found")));
+        List<ProjectCredentials> projectCredentials_target = this.projectCredentialsRepository.findProjectCredentialsByUsers(new HashSet<>(target_user));
+        return this.projectRepository.findAllByProjectCredentials(projectCredentials_target);
+    }
 
     public void addProject(Project project) {
         this.projectRepository.save(project);
