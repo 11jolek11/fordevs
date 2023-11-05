@@ -3,11 +3,14 @@ package com.dev.fordevs.model;
 import com.dev.fordevs.security.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Project {
     @Id
     @SequenceGenerator(name = "_order_id_gen", sequenceName = "_order_id_seq")
@@ -21,9 +24,8 @@ public class Project {
     @OneToMany(mappedBy = "project", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private Set<Task> tasks;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "maintainer", referencedColumnName = "id")
-    private User maintainer; // maintainer != creator
+    @CreatedBy
+    private String maintainer;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_creditionals", referencedColumnName = "id")
@@ -38,10 +40,15 @@ public class Project {
     public Project() {
     }
 
-    public Project(String title, String description, User maintainer) {
+    public Project(String title, String description) {
         this.title = title;
         this.description = description;
-        this.maintainer = maintainer;
+    }
+
+    public Project(String title, String description, ProjectCredentials projectCredentials) {
+        this.title = title;
+        this.description = description;
+        this.projectCredentials = projectCredentials;
     }
 
     public Long getId() {
@@ -74,14 +81,6 @@ public class Project {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
-    }
-
-    public User getMaintainer() {
-        return maintainer;
-    }
-
-    public void setMaintainer(User maintainer) {
-        this.maintainer = maintainer;
     }
 
     public ProjectCredentials getProjectCredentials() {

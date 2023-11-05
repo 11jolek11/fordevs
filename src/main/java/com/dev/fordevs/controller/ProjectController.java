@@ -1,6 +1,7 @@
 package com.dev.fordevs.controller;
 
 import com.dev.fordevs.model.Project;
+import com.dev.fordevs.model.ProjectCredentials;
 import com.dev.fordevs.model.Task;
 import com.dev.fordevs.model.TaskStatus;
 import com.dev.fordevs.service.ProjectService;
@@ -26,18 +27,21 @@ public class ProjectController {
     }
 
     @GetMapping("/")
-    public Set<Project> getAllProjects() {
+    public List<Project> getAllProjects() {
 //        TODO: Add pagination?
         return this.projectService.getAllProjects();
     }
 
     @GetMapping("/{projectId}")
-    public Optional<Project> getProjectById(@PathVariable("projectId") Integer id) {
+    public Project getProjectById(@PathVariable("projectId") Long id) {
         return this.projectService.getProjectById(id);
     }
 
     @PostMapping("/")
-    public void addProject(@Valid @RequestBody Project project) {
+    public void addProject(@Valid @RequestBody Project project, @RequestBody(required = false) ProjectCredentials projectCredentials) {
+        if (projectCredentials != null) {
+            this.projectService.addProject(project, projectCredentials);
+        }
         this.projectService.addProject(project);
     }
 
