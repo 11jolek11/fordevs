@@ -53,14 +53,15 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/task")
     public void addTaskToProject(@PathVariable("projectId") Long projectId, @Valid @RequestBody Task task) {
-        Long taskId = this.taskService.addTask(task); // TODO: Return task id
+        Long taskId = this.taskService.createTask(task); // TODO: Return task id
         this.projectService.assignTask(projectId, taskId);
     }
 
     @PutMapping("/{projectId}/task/{taskId}")
-    // Q: What is the purpose of projectId in specification? taskId is already unique
+    // TODO: ASK QUESTION IN ISSUES: What is the purpose of projectId in specification? taskId is already unique
     // https://github.com/Solvro/rekrutacja.zima.2023/blob/master/backend.md#edycja-statusu-taska
-    // Leaving projectId just to cover my ass and meet req in spec.
+    //
+    // Leaving projectId just to meet req in spec.
     public void updateTaskStatus(@PathVariable("projectId") Long projectId, @PathVariable Long taskId, @RequestParam TaskStatus taskStatus) {
         this.taskService.updateStatus(taskId, taskStatus);
     }
