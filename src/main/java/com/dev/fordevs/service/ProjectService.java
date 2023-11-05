@@ -47,8 +47,10 @@ public class ProjectService {
         // Ugly
         List<User> target_user = new ArrayList<>();
         target_user.add(this.userRepository.findById(userId).orElseThrow(() -> new ItemNotFoundException("User with id: "  + userId + " not found")));
-        List<ProjectCredentials> projectCredentials_target = this.projectCredentialsRepository.findProjectCredentialsByUsers(new HashSet<>(target_user));
-        return this.projectRepository.findAllByProjectCredentials(projectCredentials_target);
+        List<ProjectCredentials> projectCredentials_target = this.projectCredentialsRepository.findProjectCredentialsByUsersIn(target_user);
+//        return this.projectRepository.findAllByProjectCredentials(projectCredentials_target);
+        return this.projectRepository.findAllByProjectCredentialsIn(projectCredentials_target);
+
     }
 
     public void addProject(Project project) {

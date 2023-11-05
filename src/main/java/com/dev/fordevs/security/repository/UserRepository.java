@@ -11,5 +11,5 @@ import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByEmail(String email);
-    List<User> findAllByAssignedProjects(Set<ProjectCredentials> projectCredentials);
+//    List<User> findAllByAssignedProjects(List<ProjectCredentials> projectCredentials);
 }

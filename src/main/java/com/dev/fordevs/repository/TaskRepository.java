@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    public Set<Task> findTasksByEstimation(int estimation);
-    public Set<Task> findTasksBySpecialization(Specialization specialization);
+//    public Set<Task> findTasksByEstimation(int estimation);
+//    public Set<Task> findTasksBySpecialization(Specialization specialization);
 
     public List<Task> findAllByProject(Project project, Pageable pageable);
     public List<Task> countAllByProject(Project project, Pageable pageable);

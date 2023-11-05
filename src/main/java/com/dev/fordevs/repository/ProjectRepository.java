@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 //    Optional<Project> findProjectByProjectCredentials(ProjectCredentials projectCredentials);
-    List<Project> findAllByProjectCredentials(List<ProjectCredentials> projectCredentials);
+//    List<Project> findAllByProjectCredentials(ProjectCredentials projectCredentials);
+    List<Project> findAllByProjectCredentialsIn(List<ProjectCredentials> projectCredentials);
 }
