@@ -4,6 +4,7 @@ import com.dev.fordevs.security.filter.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,14 +28,15 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // no state, no cookies, no problem with csrf
                 // TODO: fill requestMatchers
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("").permitAll())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/*").permitAll())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/register").permitAll())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/login").permitAll())
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 }
