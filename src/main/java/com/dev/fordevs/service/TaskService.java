@@ -5,8 +5,6 @@ import com.dev.fordevs.model.TaskStatus;
 import com.dev.fordevs.repository.TaskCredentialsRepository;
 import com.dev.fordevs.repository.TaskRepository;
 import com.dev.fordevs.service.exception.ItemNotFoundException;
-import com.dev.fordevs.service.exception.NotFibonacciException;
-import com.dev.fordevs.service.utils.Fibonacci;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,9 +26,6 @@ public class TaskService {
 
     public Long createTask(Task task) {
 //        task.getTaskCredentials().getEstimation()
-        if (!Fibonacci.isFibonacci(task.getTaskCredentials().getEstimation())) {
-            throw new NotFibonacciException();
-        }
         return this.taskRepository.save(task).getId();
     }
 }
