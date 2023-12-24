@@ -1,8 +1,11 @@
 todos outside the code
 
 // TODO Change models for Credits of Tasks and Projects
-// TODO Add Error handling
 // TODO Add responses objects if needed
-// TODO add services
-// TODO add pagination
 // TODO cascade behav
+
+// TODO add caching mechanism
+// TODO add task delete
+// TODO add project delete
+
+
